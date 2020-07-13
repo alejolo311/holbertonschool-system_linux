@@ -9,6 +9,7 @@
 *.obj
 *.elf
 ls
+makefile
 
 # Linker output
 *.ilk
