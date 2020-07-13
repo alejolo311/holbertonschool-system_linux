@@ -25,3 +25,7 @@ $(APP): $(OBJ)
 clean:
 	find . -name *.o -delete
 	rm -f $(APP)
+
+style:
+	betty *.c
+	betty *.h
