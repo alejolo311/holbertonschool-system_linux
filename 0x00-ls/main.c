@@ -6,6 +6,7 @@
  * section header: the header of this function is ls.h
  * Return: 0 in success, for other codes of error read the documentation
  */
-int main(){
-  return (0);
+int main(void)
+{
+	return (0);
 }
