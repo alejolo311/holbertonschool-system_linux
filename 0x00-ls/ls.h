@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-DIR *open_dir(int argc, char **argv);
+char **validate_dir(int argc, char **argv);
+DIR *open_dir(char *folder);
 void read_dir(DIR *dir);
 
 

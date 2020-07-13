@@ -11,9 +11,18 @@
 int main(int argc, char **argv)
 {
 	DIR *dir;
+	char **dirs;
 
-	dir = open_dir(argc, argv);
-	read_dir(dir);
-	closedir(dir);
+
+	dirs = validate_dir(argc, argv);
+	for (int i = 0; dirs[i] != NULL; i++)
+	{
+		i != 0 ? putchar(10) : i;
+		printf("%s:\n", dirs[i]);
+		dir = open_dir(dirs[i]);
+		read_dir(dir);
+		closedir(dir);
+
+	}
 	return (0);
 }

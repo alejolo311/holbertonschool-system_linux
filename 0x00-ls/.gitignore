@@ -3,6 +3,8 @@
 *.d
 
 # Object files
+/folder1
+/folder2
 /obj
 *.o
 *.ko

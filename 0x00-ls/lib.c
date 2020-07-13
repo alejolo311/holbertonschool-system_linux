@@ -1,21 +1,44 @@
 #include "ls.h"
+/**
+ * validate_dir - read the argv and select the folders
+ * Description: this function validates the argv and return the valid folders
+ * @argc: this argument contains the number of args passed in the call
+ * @argv: double pointer to the arguments passed in the call
+ * section header: the header of this function is ls.h
+ * Return: a double pointer that contains all the valid folders
+ */
+char **validate_dir(int argc, char **argv)
+{
+	char **folders;
+	int i;
+
+	if (argc != 1)
+	{
+		folders = malloc(sizeof(char *) * argc - 1);
+		for (i = 0; i < argc; i++)
+			folders[i] = argv[i + 1];
+	}
+	else
+	{
+		folders = malloc(sizeof(char *));
+		folders[0] = "./";
+	}
+	return (folders);
+}
 
 /**
  * open_dir - open a dir
  * Description: this function validates the argv and try to open the folder
  * in case argv was empty open the execution folder
- * @argc: this argument contains the number of args passed in the call
- * @argv: double pointer to the arguments passed in the call
+ * @folder: folder to open
  * section header: the header of this function is ls.h
  * Return: a valid directory
  */
-DIR *open_dir(int argc, char **argv)
+DIR *open_dir(char *folder)
 {
 	DIR *dir;
-	(void) argc;
-	(void) argv;
 
-	dir = opendir("./");
+	dir = opendir(folder);
 	return (dir);
 }
 /**
