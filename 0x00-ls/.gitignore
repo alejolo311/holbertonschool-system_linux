@@ -12,7 +12,7 @@
 *.ko
 *.obj
 *.elf
-ls
+hls
 makefile
 
 # Linker output

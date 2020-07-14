@@ -1,5 +1,51 @@
 #include "ls.h"
 /**
+ * validate_args - read the argv and select the valid args
+ * Description: this function validates the argv and return the valid arguments
+ * @argv: double pointer to the arguments passed in the call
+ * section header: the header of this function is ls.h
+ * Return: a string with al the valid args
+ */
+char *validate_args(char **argv)
+{
+	int i, j;
+	char buff[120] = {'-', '\0'};
+	char *args = NULL;
+	char *valid_args = "1aAlrStR";
+	char str[2];
+
+	for (i = 0; argv[i] != NULL; i++)
+	{
+		if (argv[i][0] == '-')
+		{
+			for (j = 1; argv[i][j] != '\0'; j++)
+				if (include(valid_args, argv[i][j]))
+				{
+					if (!include(buff, argv[i][j]))
+					{
+						str[0] = argv[i][j];
+						str[1] = '\0';
+						strcat(buff, str);
+					}
+					continue;
+				}
+				else
+				{
+					fprintf(stderr,
+					"hls: invalid option -- '%c'\nTry 'hls --help' for more information.\n",
+					argv[i][j]);
+					exit(2);
+				}
+		}
+	}
+	if (strlen(buff) != 0)
+	{
+		args = strdup(buff);
+		return (args);
+	}
+	return (NULL);
+}
+/**
  * validate_dir - read the argv and select the folders
  * Description: this function validates the argv and return the valid folders
  * @argc: this argument contains the number of args passed in the call
@@ -14,6 +60,7 @@ char **validate_dir(int argc, char **argv, int *ret, int *fcount)
 	char **folders = NULL;
 	int i = 0, j = 0;
 	struct stat sb;
+	int errors = 0;
 
 	if (argc != 1)
 	{
@@ -24,19 +71,27 @@ char **validate_dir(int argc, char **argv, int *ret, int *fcount)
 		{
 			if (stat(argv[i], &sb) == 0 && S_ISDIR(sb.st_mode))
 				folders[j] = strdup(argv[i]), (*fcount)++;
+			else if (argv[i][0] == '-')
+				j--;
 			else
 			{
 				fprintf(stderr,
 						"hls: cannot access '%s': No such file or directory\n",
 						argv[i]);
 				(*ret) = 2;
+				errors++;
 				j--;
 			}
 		}
 	}
-	else
-		return (NULL);
-
+	if ((*fcount) == 0 && errors == 0)
+	{
+		free(folders);
+		folders = malloc(sizeof(*folders));
+		if (folders == NULL)
+			return (NULL);
+		folders[0] = strdup("."), (*fcount)++;
+	}
 	return (folders);
 }
 
@@ -60,30 +115,27 @@ DIR *open_dir(char *folder)
 
 }
 /**
- * read_dir - entry point of ls program
+ * read_dir - read the folder
  * Description: this function read a directory and print the content
  * @dir: directory to read
  * @folder: the name of the folder
- * @argc: this argument contains the number of args passed in the call
  * @ret: is the value of return in normal cases 0 in error 2
  * @errors: a double pointer that stores the names of the folder with errors
  * section header: the header of this function is ls.h
  * Return: void
  */
-void read_dir(DIR *dir, char *folder, int argc, int *ret, char **errors)
+char **read_dir(DIR *dir, char *folder, int *ret, char **errors)
 {
-
 	struct stat sb;
 	struct dirent *read;
+	char **files = NULL;
 	int i;
 
 	if (stat(folder, &sb) == 0 && sb.st_mode & S_IRUSR)
 	{
-		argc > 2 ? printf("%s:\n", folder) : argc;
-		while ((read = readdir(dir)) != NULL)
-			if (read->d_name[0] != '.')
-				printf("%s  ", read->d_name);
-		putchar(10);
+		files = calloc(100, sizeof(*files));
+		for (i = 0; (read = readdir(dir)) != NULL; i++)
+			files[i] = strdup(read->d_name);
 	}
 	else
 	{
@@ -93,4 +145,42 @@ void read_dir(DIR *dir, char *folder, int argc, int *ret, char **errors)
 		*(errors + i) = strdup(folder);
 		*(ret) = 3;
 	}
+	return (files);
+}
+/**
+ * print_dir - print the folder
+ * Description: this function print the content
+ * @files: the files that the folder contains
+ * @args: the arguments passed to ls to format the output
+ * section header: the header of this function is ls.h
+ * Return: 0 in success
+ */
+int print_dir(char **files, char *args)
+{
+	int i;
+
+	if (strlen(args) == 1)
+	{
+		for (i = 0; files[i] != NULL; i++)
+		{
+			if (files[i][0] != '.')
+				printf("%s  ", files[i]);
+			free(files[i]);
+		}
+		putchar(10);
+		free(files);
+		return (0);
+	}
+	if (include(args, '1'))
+	{
+		for (i = 0; files[i] != NULL; i++)
+		{
+			if (files[i][0] != '.')
+				printf("%s\n", files[i]);
+			free(files[i]);
+		}
+		free(files);
+		return (0);
+	}
+	return (0);
 }

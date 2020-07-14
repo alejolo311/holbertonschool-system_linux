@@ -11,33 +11,25 @@
 int main(int argc, char **argv)
 {
 	DIR *dir = NULL;
-	char **dirs = NULL, **errors = NULL;
+	char **dirs = NULL, **errors = NULL, *args = NULL, **files = NULL;
 	int i = 0, ret = 0, fcount = 0;
-
 
 	errors = calloc(12, sizeof(*errors));
 	if (errors == NULL)
 		return (-1);
 
+	args = validate_args(argv);
 	dirs = validate_dir(argc, argv, &ret, &fcount);
-	if (dirs)
+	for (i = 0; i < fcount; i++)
 	{
-		for (i = 0; i < fcount; i++)
-		{
-			dir = open_dir(dirs[i]);
-			read_dir(dir, dirs[i], argc, &ret, &*errors);
-			closedir(dir);
-			free(dirs[i]);
-		}
-		free(dirs);
-	}
-	else
-	{
-		dir = open_dir(".");
-		read_dir(dir, ".", argc, &ret, &*errors);
-		putchar(10);
+		dir = open_dir(dirs[i]);
+		files = read_dir(dir, dirs[i], &ret, &*errors);
+		if (files)
+			print_dir(files, args);
 		closedir(dir);
+		free(dirs[i]);
 	}
+	free(dirs);
 	if (ret == 3)
 	{
 		for (i = 0; errors[i] != NULL; i++)
@@ -48,5 +40,6 @@ int main(int argc, char **argv)
 	}
 	else
 		free(errors);
+	free(args);
 	return (ret);
 }
