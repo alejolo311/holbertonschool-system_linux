@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 		dir = open_dir(dirs[i]);
 		files = read_dir(dir, dirs[i], &ret, &*errors);
 		if (files)
-			print_dir(files, args);
+			print_dir(files, args, dirs[i]);
 		closedir(dir);
 		free(dirs[i]);
 	}

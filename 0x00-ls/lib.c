@@ -59,7 +59,7 @@ char **validate_dir(int argc, char **argv, int *ret, int *fcount)
 {
 	char **folders = NULL;
 	int i = 0, j = 0;
-	struct stat sb;
+	struct stat file;
 	int errors = 0;
 
 	if (argc != 1)
@@ -69,7 +69,7 @@ char **validate_dir(int argc, char **argv, int *ret, int *fcount)
 			return (NULL);
 		for (i = 1, j = 0; argv[i] != NULL; i++, j++)
 		{
-			if (stat(argv[i], &sb) == 0 && S_ISDIR(sb.st_mode))
+			if (stat(argv[i], &file) == 0 && S_ISDIR(file.st_mode))
 				folders[j] = strdup(argv[i]), (*fcount)++;
 			else if (argv[i][0] == '-')
 				j--;
@@ -126,12 +126,12 @@ DIR *open_dir(char *folder)
  */
 char **read_dir(DIR *dir, char *folder, int *ret, char **errors)
 {
-	struct stat sb;
+	struct stat file;
 	struct dirent *read;
 	char **files = NULL;
 	int i;
 
-	if (stat(folder, &sb) == 0 && sb.st_mode & S_IRUSR)
+	if (stat(folder, &file) == 0 && file.st_mode & S_IRUSR)
 	{
 		files = calloc(100, sizeof(*files));
 		for (i = 0; (read = readdir(dir)) != NULL; i++)
@@ -152,35 +152,21 @@ char **read_dir(DIR *dir, char *folder, int *ret, char **errors)
  * Description: this function print the content
  * @files: the files that the folder contains
  * @args: the arguments passed to ls to format the output
+ * @folder: the folder that is print
  * section header: the header of this function is ls.h
  * Return: 0 in success
  */
-int print_dir(char **files, char *args)
+int print_dir(char **files, char *args, char *folder)
 {
-	int i;
-
 	if (strlen(args) == 1)
-	{
-		for (i = 0; files[i] != NULL; i++)
-		{
-			if (files[i][0] != '.')
-				printf("%s  ", files[i]);
-			free(files[i]);
-		}
-		putchar(10);
-		free(files);
-		return (0);
-	}
+		without_flags(files, folder);
 	if (include(args, '1'))
-	{
-		for (i = 0; files[i] != NULL; i++)
-		{
-			if (files[i][0] != '.')
-				printf("%s\n", files[i]);
-			free(files[i]);
-		}
-		free(files);
-		return (0);
-	}
+		flag_1(files, folder);
+	if (include(args, 'a'))
+		flag_a(files, folder);
+	if (include(args, 'A'))
+		flag_A(files, folder);
+	if (include(args, 'l'))
+		flag_l(files, folder);
 	return (0);
 }
