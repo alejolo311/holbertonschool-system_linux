@@ -146,6 +146,8 @@ char **read_dir(DIR *dir, char *folder, int *ret, char **errors)
 		*(errors + i) = strdup(folder);
 		*(ret) = 3;
 	}
+	if (files)
+		files = sort(files, 1);
 	return (files);
 }
 /**
@@ -163,6 +165,8 @@ int print_dir(char **files, char *args, char *folder)
 
 	buffer = calloc(8192, sizeof(char));
 
+	if (include(args, 'r'))
+		files = sort(files, 2);
 	if (!include(args, 'a') && !include(args, 'A'))
 		files = flag_a(files, folder);
 	if (include(args, 'A') && !include(args, 'a'))
@@ -171,13 +175,11 @@ int print_dir(char **files, char *args, char *folder)
 		flag_1(files, folder, &buffer);
 	if (include(args, 'l'))
 		flag_l(files, folder);
-	if ((strcmp(args, "-") == 0 || include(args, 'A')
-	    || include(args, 'a')) && !include(args, 'l'))
+	if ((strcmp(args, "-") == 0 || include(args, 'A') || include(args, 'r') || include(args, 'a')) && !include(args, 'l'))
 		without_flags(files, folder, &buffer);
-
 	if (strlen(buffer) > 0)
 		printf("%s", buffer);
-	if (!include(args, '1') && !include(args, 'l'))
+	if (!include(args, '1') && !include(args, 'l') && strlen(buffer) > 0)
 		putchar(10);
 
 	free(buffer);

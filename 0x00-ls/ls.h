@@ -14,6 +14,22 @@
 #include <pwd.h>
 #include <grp.h>
 
+
+
+/**
+ * struct lfile_s - singly linked list
+ * @str: variable
+ * @next: points to the next node
+ * @var: enviroment variables.
+ * Description: singly linked list node to store the env
+ */
+typedef struct lfile_s
+{
+	char *var;
+	struct lfile_s *prev;
+	struct lfile_s *next;
+} lfile_s;
+
 /* lib */
 char *validate_args(char **argv);
 char **validate_dir(int argc, char **argv, int *ret, int *fcount, int *errors);
@@ -35,5 +51,26 @@ void flag_1(char **files, char *folder, char **buffer);
 char **flag_a(char **files, char *folder);
 char **flag_A(char **files, char *folder);
 void without_flags(char **files, char *folder, char **buffer);
+
+
+
+/* sorting */
+
+char **sort(char **files, int mode);
+
+
+
+/* sorting helpers */
+lfile_s *to_list(char **files);
+char **to_array(lfile_s **head);
+void nsort(lfile_s **list);
+void reverse(lfile_s **list);
+
+/* list helpers */
+
+int delete_node(lfile_s **head, unsigned int index);
+lfile_s *add_node(lfile_s **head, char *str);
+void free_list(lfile_s **head);
+size_t print_list(lfile_s **head);
 
 #endif /* LS_H */

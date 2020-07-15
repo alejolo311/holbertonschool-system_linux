@@ -29,8 +29,8 @@ int main(int argc, char **argv)
 			if (fcount > 1)
 				printf("%s:\n", dirs[i]);
 			print_dir(files, args, dirs[i]);
-			if (fcount > 1 && i != fcount - ecount)
-			printf("\n");
+			if (fcount > 1 && i + 1 != fcount)
+				printf("\n");
 		}
 		closedir(dir);
 		free(dirs[i]);
