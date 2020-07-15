@@ -12,20 +12,26 @@ int main(int argc, char **argv)
 {
 	DIR *dir = NULL;
 	char **dirs = NULL, **errors = NULL, *args = NULL, **files = NULL;
-	int i = 0, ret = 0, fcount = 0;
+	int i = 0, ret = 0, fcount = 0, ecount = 0;
 
 	errors = calloc(12, sizeof(*errors));
 	if (errors == NULL)
 		return (-1);
 
 	args = validate_args(argv);
-	dirs = validate_dir(argc, argv, &ret, &fcount);
+	dirs = validate_dir(argc, argv, &ret, &fcount, &ecount);
 	for (i = 0; i < fcount; i++)
 	{
 		dir = open_dir(dirs[i]);
 		files = read_dir(dir, dirs[i], &ret, &*errors);
 		if (files)
+		{
+			if (fcount > 1)
+				printf("%s:\n", dirs[i]);
 			print_dir(files, args, dirs[i]);
+			if (fcount > 1 && i != fcount - ecount)
+			printf("\n");
+		}
 		closedir(dir);
 		free(dirs[i]);
 	}

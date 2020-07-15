@@ -52,15 +52,16 @@ char *validate_args(char **argv)
  * @argv: double pointer to the arguments passed in the call
  * @ret: is the value of return in normal cases 0 in error 2
  * @fcount: is the count of folders that ls recieves as an arg
+ * @errors: count of errors that occurs
  * section header: the header of this function is ls.h
  * Return: a double pointer that contains all the valid folders
  */
-char **validate_dir(int argc, char **argv, int *ret, int *fcount)
+char **validate_dir(int argc, char **argv, int *ret, int *fcount, int *errors)
 {
 	char **folders = NULL;
 	int i = 0, j = 0;
 	struct stat file;
-	int errors = 0;
+	(void) errors;
 
 	if (argc != 1)
 	{
@@ -79,12 +80,12 @@ char **validate_dir(int argc, char **argv, int *ret, int *fcount)
 						"hls: cannot access '%s': No such file or directory\n",
 						argv[i]);
 				(*ret) = 2;
-				errors++;
+				(*errors)++;
 				j--;
 			}
 		}
 	}
-	if ((*fcount) == 0 && errors == 0)
+	if ((*fcount) == 0 && (*errors) == 0)
 	{
 		free(folders);
 		folders = malloc(sizeof(*folders));
@@ -158,15 +159,27 @@ char **read_dir(DIR *dir, char *folder, int *ret, char **errors)
  */
 int print_dir(char **files, char *args, char *folder)
 {
-	if (strlen(args) == 1)
-		without_flags(files, folder);
-	if (include(args, '1'))
-		flag_1(files, folder);
-	if (include(args, 'a'))
-		flag_a(files, folder);
-	if (include(args, 'A'))
-		flag_A(files, folder);
+	char *buffer;
+
+	buffer = calloc(8192, sizeof(char));
+
+	if (!include(args, 'a') && !include(args, 'A'))
+		files = flag_a(files, folder);
+	if (include(args, 'A') && !include(args, 'a'))
+		files = flag_A(files, folder);
+	if (include(args, '1') && !include(args, 'l'))
+		flag_1(files, folder, &buffer);
 	if (include(args, 'l'))
 		flag_l(files, folder);
+	if ((strcmp(args, "-") == 0 || include(args, 'A')
+	    || include(args, 'a')) && !include(args, 'l'))
+		without_flags(files, folder, &buffer);
+
+	if (strlen(buffer) > 0)
+		printf("%s", buffer);
+	if (!include(args, '1') && !include(args, 'l'))
+		putchar(10);
+
+	free(buffer);
 	return (0);
 }

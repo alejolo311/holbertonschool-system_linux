@@ -32,18 +32,16 @@ void flag_l(char **files, char *folder)
 		grp = getgrgid(file.st_gid);
 		perm = permissions(file);
 		date = get_date(file);
-
-		if (files[i][0] != '.')
-		{
-			printf("%s ", perm);
-			printf("%ld ", (long) file.st_nlink);
-			printf("%s ", usr->pw_name);
-			printf("%s ", grp->gr_name);
-			printf("%5lld ", (long long) file.st_size);
-			printf("%s ", date);
-			printf("%s\n", files[i]);
-			free(files[i]);
-		}
+		printf("%s ", perm);
+		printf("%ld ", (long) file.st_nlink);
+		printf("%s ", usr->pw_name);
+		printf("%s ", grp->gr_name);
+		printf("%5lld ", (long long) file.st_size);
+		printf("%s ", date);
+		printf("%s\n", files[i]);
+		free(files[i]);
+		free(perm);
+		free(date);
 	}
 	free(files);
 }
@@ -55,15 +53,26 @@ void flag_l(char **files, char *folder)
  * section header: the header of this function is ls.h
  * Return: void
  */
-void flag_a(char **files, char *folder)
+char **flag_a(char **files, char *folder)
 {
-	int i;
+	int i, j;
+	char **buffer;
 	(void) folder;
 
-	for (i = 0; files[i] != NULL; i++)
-		printf("%s  ", files[i]), free(files[i]);
-	putchar(10);
+	buffer = calloc(48, sizeof(*buffer));
+	for (i = 0, j = 0; files[i] != NULL; i++)
+	{
+		if (files[i][0] != '.')
+		{
+			buffer[j] = strdup(files[i]);
+			j++;
+		}
+
+
+	free(files[i]);
+	}
 	free(files);
+	return (buffer);
 }
 /**
  * flag_A - function to manage the "A" flag
@@ -73,60 +82,63 @@ void flag_a(char **files, char *folder)
  * section header: the header of this function is ls.h
  * Return: void
  */
-void flag_A(char **files, char *folder)
+char **flag_A(char **files, char *folder)
 {
-	int i;
+	int i, j;
+	char **buffer;
 	(void) folder;
 
-	for (i = 0; files[i] != NULL; i++)
+	buffer = calloc(48, sizeof(*buffer));
+	for (i = 0, j = 0; files[i] != NULL; i++)
 	{
 		if (strcmp(files[i], ".") != 0 && strcmp(files[i], "..") != 0)
-			printf("%s  ", files[i]);
-		free(files[i]);
+		{
+			buffer[j] = strdup(files[i]);
+			j++;
+		}
+	free(files[i]);
 	}
-	putchar(10);
 	free(files);
+	return (buffer);
 }
 /**
  * flag_1 - function to manage the "1" flag
  * Description: print witn /n between each file
  * @files: the files that the folder contains
  * @folder: the folder that is print
+ * @buffer: the print buffer
  * section header: the header of this function is ls.h
  * Return: void
  */
-void flag_1(char **files, char *folder)
+void flag_1(char **files, char *folder, char **buffer)
 {
 	int i;
 	(void) folder;
 
 	for (i = 0; files[i] != NULL; i++)
 	{
-		if (files[i][0] != '.')
-			printf("%s\n", files[i]);
-		free(files[i]);
+		strcat(*(buffer), files[i]);
+		strcat(*(buffer), "\n");
 	}
-	free(files);
 }
 /**
  * without_flags - function to manage the normal print
  * Description: normal ls print
  * @files: the files that the folder contains
  * @folder: the folder that is print
+ * @buffer: the print buffer
  * section header: the header of this function is ls.h
  * Return: void
  */
-void without_flags(char **files, char *folder)
+void without_flags(char **files, char *folder, char **buffer)
 {
 	int i;
 	(void) folder;
-
 	for (i = 0; files[i] != NULL; i++)
 	{
-		if (files[i][0] != '.')
-			printf("%s  ", files[i]);
+		strcat(*(buffer), files[i]);
+		strcat(*(buffer), "  ");
 		free(files[i]);
 	}
-	putchar(10);
 	free(files);
 }
