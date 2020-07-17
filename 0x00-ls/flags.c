@@ -34,8 +34,8 @@ void flag_l(char **files, char *folder)
 		date = get_date(file);
 		printf("%s ", perm);
 		printf("%ld ", (long) file.st_nlink);
-		printf("%s ", usr->pw_name);
-		printf("%s ", grp->gr_name);
+		printf("%s ", usr->pw_name != NULL ? usr->pw_name : "");
+		printf("%s ", grp->gr_name != NULL ? grp->gr_name : "");
 		printf("%ld ", (long) file.st_size);
 		printf("%s ", date);
 		printf("%s\n", files[i]);
