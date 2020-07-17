@@ -76,12 +76,12 @@ char **validate_dir(int argc, char **argv, int *ret,
 			return (NULL);
 		for (i = 1, j = 0; argv[i] != NULL; i++, j++)
 		{
-			if (stat(argv[i], &file) == 0 && S_ISDIR(file.st_mode)
+			if (lstat(argv[i], &file) == 0 && S_ISDIR(file.st_mode)
 										&& !S_ISREG(file.st_mode))
 				folders[j] = _strdup(argv[i]), (*fcount)++;
 			else if (argv[i][0] == '-')
 				j--, _strcmp(argv[i], "--") != 0 ? dash = 1 : 1;
-			else if (stat(argv[i], &file) == 0 && S_ISREG(file.st_mode))
+			else if (lstat(argv[i], &file) == 0 && S_ISREG(file.st_mode))
 				files[k] = strdup(argv[i]), (*ficount)++, j--, k++;
 			else
 				fprintf(stderr,
@@ -140,7 +140,7 @@ char **read_dir(DIR *dir, char *folder, int *ret, char **errors)
 	char **files = NULL;
 	int i;
 
-	if (stat(folder, &file) == 0 && file.st_mode & S_IRUSR)
+	if (lstat(folder, &file) == 0 && file.st_mode & S_IRUSR)
 	{
 		files = _calloc(100, sizeof(*files));
 		for (i = 0; (read = readdir(dir)) != NULL; i++)
