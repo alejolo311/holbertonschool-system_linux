@@ -63,10 +63,11 @@ char *validate_args(char **argv, char **errors)
 char **validate_dir(int argc, char **argv, int *ret,
 					int *fcount, int *errors, int *ficount, char *args)
 {
-	char **folders = NULL;
-	int i = 0, j = 0, dash = 0;
+	char **folders = NULL, **files;
+	int i = 0, j = 0, dash = 0, k = 0;
 	struct stat file;
 
+	files = _calloc(100, sizeof(*files));
 	if (argc != 1)
 	{
 		folders = malloc(sizeof(*folders) * argc);
@@ -80,18 +81,14 @@ char **validate_dir(int argc, char **argv, int *ret,
 			else if (argv[i][0] == '-')
 				j--, _strcmp(argv[i], "--") != 0 ? dash = 1 : 1;
 			else if (stat(argv[i], &file) == 0 && S_ISREG(file.st_mode))
-				if (include(args, '1') && !include(args, 'l'))
-					printf("%s\n", argv[i]), (*ficount)++, j--;
-				else
-					printf("%s  ", argv[i]), (*ficount)++, j--;
+				files[k] = strdup(argv[i]), (*ficount)++, j--, k++;
 			else
 				fprintf(stderr,
 						"hls: cannot access %s: No such file or directory\n",
 						argv[i]), (*ret) = 2, (*errors)++, j--;
 		}
-		(*ficount) > 0  && !include(args, '1') ? printf("\n") : 1;
-		(*ficount) > 0 && (*fcount) > 0 ? printf("\n") : 1;
 	}
+	 (*ficount) > 0 ? print_dir(files, args, "."), printf("\n") : 1;
 	if (((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0) ||
 		(dash == 1 && ((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0)))
 	{
