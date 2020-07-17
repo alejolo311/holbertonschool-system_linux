@@ -90,13 +90,13 @@ int _strcmp(char *s1, char *s2)
 }
 /**
  * _strstr - this function compare two strings
- * @s1: the first string
- * @s2: the second string
- (* a blank line
+ * @haystack: the string to search
+ * @needle: tthe string where gonna search
+ * a blank line
  * Description: this function comparing two strings using the first value)?
-(* section header: the header of this function is holberton.h)*
-* Return: return a number depends os the resul fo comparation.
-*/
+ * section header: the header of this function is holberton.h)*
+ * Return: return a number depends os the resul fo comparation.
+ */
 char *_strstr(char *haystack, char *needle)
 {
 

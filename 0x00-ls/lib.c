@@ -37,7 +37,7 @@ char *validate_args(char **argv, char **errors)
 		if (_strstr(argv[i], "---") != NULL)
 		{
 			fprintf(stderr,
-			"hls: unrecognized option '---'\nTry 'hls --help' for more information.\n"), 
+			"hls: unrecognized option '---'\nTry 'hls --help' for more information.\n");
 			free(errors), exit(2);
 		}
 	}

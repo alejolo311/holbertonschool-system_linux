@@ -42,12 +42,10 @@ int main(int argc, char **argv)
 			fprintf(stderr,
 						"hls: cannot open directory %s: Permission denied\n",
 						errors[i]), free(errors[i]);
-		free(errors), ret = 13;
+		free(errors), ret = 2;
 	}
 	else
 		free(errors);
 	free(args);
-	if (fcount + ficount > 1)
-		return (0);
 	return (ret);
 }
