@@ -57,6 +57,7 @@ char *validate_args(char **argv, char **errors)
  * @fcount: is the count of folders that ls recieves as an arg
  * @ficount: is the count of files that ls recieves as an arg
  * @errors: count of errors that occurs
+ * @args: count of errors that occurs
  * section header: the header of this function is ls.h
  * Return: a double pointer that contains all the valid folders
  */
