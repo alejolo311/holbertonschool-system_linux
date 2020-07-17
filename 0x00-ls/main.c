@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 	{
 		for (i = 0; errors[i] != NULL; i++)
 			fprintf(stderr,
-						"hls: cannot open directory '%s': Permission denied\n",
+						"hls: cannot open directory %s: Permission denied\n",
 						errors[i]), free(errors[i]);
 		free(errors), ret = 13;
 	}

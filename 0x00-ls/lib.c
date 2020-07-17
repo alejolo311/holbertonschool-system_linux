@@ -83,7 +83,7 @@ char **validate_dir(int argc, char **argv, int *ret,
 				printf("%s  ", argv[i]), (*ficount)++, j--;
 			else
 				fprintf(stderr,
-						"hls: cannot access '%s': No such file or directory\n",
+						"hls: cannot access %s: No such file or directory\n",
 						argv[i]), (*ret) = 2, (*errors)++, j--;
 		}
 		(*ficount) > 0 ? printf("\n") : 1;
