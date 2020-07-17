@@ -61,7 +61,7 @@ char *validate_args(char **argv, char **errors)
  * Return: a double pointer that contains all the valid folders
  */
 char **validate_dir(int argc, char **argv, int *ret,
-					int *fcount, int *errors, int *ficount)
+					int *fcount, int *errors, int *ficount, char *args)
 {
 	char **folders = NULL;
 	int i = 0, j = 0, dash = 0;
@@ -80,13 +80,16 @@ char **validate_dir(int argc, char **argv, int *ret,
 			else if (argv[i][0] == '-')
 				j--, _strcmp(argv[i], "--") != 0 ? dash = 1 : 1;
 			else if (stat(argv[i], &file) == 0 && S_ISREG(file.st_mode))
-				printf("%s  ", argv[i]), (*ficount)++, j--;
+				if (include(args, '1') && !include(args, 'l'))
+					printf("%s\n", argv[i]), (*ficount)++, j--;
+				else
+					printf("%s  ", argv[i]), (*ficount)++, j--;
 			else
 				fprintf(stderr,
 						"hls: cannot access %s: No such file or directory\n",
 						argv[i]), (*ret) = 2, (*errors)++, j--;
 		}
-		(*ficount) > 0 ? printf("\n") : 1;
+		(*ficount) > 0  && !include(args, '1') ? printf("\n") : 1;
 		(*ficount) > 0 && (*fcount) > 0 ? printf("\n") : 1;
 	}
 	if (((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0) ||

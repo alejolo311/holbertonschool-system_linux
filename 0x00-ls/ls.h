@@ -34,7 +34,7 @@ typedef struct lfile_s
 /* lib */
 char *validate_args(char **argv, char **errors);
 char **validate_dir(int argc, char **argv,
-					int *ret, int *fcount, int *errors, int *ficount);
+					int *ret, int *fcount, int *errors, int *ficount, char *args);
 DIR *open_dir(char *folder);
 char **read_dir(DIR *dir, char *folder, int *ret, char **errors);
 int print_dir(char **files, char *args, char *folder);

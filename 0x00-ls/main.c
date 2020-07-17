@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 		return (-1);
 
 	args = validate_args(argv, errors);
-	dirs = validate_dir(argc, argv, &ret, &fcount, &ecount, &ficount);
+	dirs = validate_dir(argc, argv, &ret, &fcount, &ecount, &ficount, args);
 	for (i = 0; i < fcount; i++)
 	{
 		dir = open_dir(dirs[i]);
