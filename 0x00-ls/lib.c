@@ -6,7 +6,7 @@
  * section header: the header of this function is ls.h
  * Return: a string with al the valid args
  */
-char *validate_args(char **argv)
+char *validate_args(char **argv, char **errors)
 {
 	int i, j;
 	char buff[120] = {'-', '\0'};
@@ -16,7 +16,7 @@ char *validate_args(char **argv)
 
 	for (i = 0; argv[i] != NULL; i++)
 	{
-		if (argv[i][0] == '-')
+		if (argv[i][0] == '-' &&  _strstr(argv[i], "--") == NULL)
 		{
 			for (j = 1; argv[i][j] != '\0'; j++)
 				if (include(valid_args, argv[i][j]))
@@ -34,6 +34,7 @@ char *validate_args(char **argv)
 					fprintf(stderr,
 					"hls: invalid option -- '%c'\nTry 'hls --help' for more information.\n",
 					argv[i][j]);
+					free(errors);
 					exit(2);
 				}
 		}
@@ -61,7 +62,7 @@ char **validate_dir(int argc, char **argv, int *ret,
 					int *fcount, int *errors, int *ficount)
 {
 	char **folders = NULL;
-	int i = 0, j = 0;
+	int i = 0, j = 0, dash = 0;
 	struct stat file;
 	(void) errors;
 
@@ -76,7 +77,11 @@ char **validate_dir(int argc, char **argv, int *ret,
 										&& !S_ISREG(file.st_mode))
 				folders[j] = _strdup(argv[i]), (*fcount)++;
 			else if (argv[i][0] == '-' && _strcmp(argv[i], "-") != 0)
+			{
 				j--;
+				if ( _strcmp(argv[i], "--") != 0)
+					dash = 1;
+			}
 			else if (stat(argv[i], &file) == 0 && S_ISREG(file.st_mode))
 				printf("%s  ", argv[i]), (*ficount)++, j--;
 			else
@@ -89,7 +94,7 @@ char **validate_dir(int argc, char **argv, int *ret,
 		if ((*ficount) > 0 && (*fcount) > 0)
 			printf("\n");
 	}
-	if ((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0)
+	if (((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0) || dash == 1)
 	{
 		free(folders);
 		folders = malloc(sizeof(*folders));

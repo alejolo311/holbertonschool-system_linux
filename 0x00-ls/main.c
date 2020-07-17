@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	if (errors == NULL)
 		return (-1);
 
-	args = validate_args(argv);
+	args = validate_args(argv, errors);
 	dirs = validate_dir(argc, argv, &ret, &fcount, &ecount, &ficount);
 	for (i = 0; i < fcount; i++)
 	{
@@ -42,10 +42,13 @@ int main(int argc, char **argv)
 			fprintf(stderr,
 						"hls: cannot open directory '%s': Permission denied\n",
 						errors[i]), free(errors[i]);
-		free(errors), ret = 2;
+		free(errors), ret = 13;
 	}
 	else
 		free(errors);
 	free(args);
+
+	if (fcount + ficount > 1)
+		return (0);
 	return (ret);
 }

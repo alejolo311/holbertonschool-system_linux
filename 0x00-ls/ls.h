@@ -32,7 +32,7 @@ typedef struct lfile_s
 } lfile_s;
 
 /* lib */
-char *validate_args(char **argv);
+char *validate_args(char **argv,char **errors);
 char **validate_dir(int argc, char **argv,
 					int *ret, int *fcount, int *errors, int *ficount);
 DIR *open_dir(char *folder);
@@ -88,5 +88,6 @@ char *_strcat(char *dest, char *src);
 int _strlen(char *s);
 char *_strdup(char *str);
 int _strcmp(char *s1, char *s2);
+char *_strstr(char *haystack, char *needle);
 
 #endif /* LS_H */
