@@ -10,14 +10,11 @@
 void flag_l(char **files, char *folder)
 {
 	struct stat file;
-	int nodes, i;
+	int i;
 	char buffer[48];
 	struct passwd *usr;
 	struct group *grp;
 	char *perm, *date;
-
-	nodes = get_nodes(files, folder);
-	printf("total %i\n", nodes);
 
 	for (i = 0; files[i] != NULL; i++)
 	{

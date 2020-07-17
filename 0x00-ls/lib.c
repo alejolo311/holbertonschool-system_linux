@@ -89,7 +89,8 @@ char **validate_dir(int argc, char **argv, int *ret,
 						argv[i]), (*ret) = 2, (*errors)++, j--;
 		}
 	}
-	 (*ficount) > 0 ? print_dir(files, args, "."), printf("\n") : 1;
+	 (*ficount) > 0 ? print_dir(files, args, ".") : 1;
+	 (*ficount) > 0  && (*fcount) > 0 ? printf("\n") : 1;
 	if (((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0) ||
 		(dash == 1 && ((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0)))
 	{
