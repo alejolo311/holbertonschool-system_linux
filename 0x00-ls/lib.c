@@ -56,7 +56,8 @@ char *validate_args(char **argv)
  * section header: the header of this function is ls.h
  * Return: a double pointer that contains all the valid folders
  */
-char **validate_dir(int argc, char **argv, int *ret, int *fcount, int *errors)
+char **validate_dir(int argc, char **argv, int *ret,
+					int *fcount, int *errors, int *ficount)
 {
 	char **folders = NULL;
 	int i = 0, j = 0;
@@ -70,22 +71,24 @@ char **validate_dir(int argc, char **argv, int *ret, int *fcount, int *errors)
 			return (NULL);
 		for (i = 1, j = 0; argv[i] != NULL; i++, j++)
 		{
-			if (stat(argv[i], &file) == 0 && S_ISDIR(file.st_mode))
+			if (stat(argv[i], &file) == 0 && S_ISDIR(file.st_mode) 
+										&& !S_ISREG(file.st_mode))
 				folders[j] = _strdup(argv[i]), (*fcount)++;
 			else if (argv[i][0] == '-')
 				j--;
+			else if (stat(argv[i], &file) == 0 && S_ISREG(file.st_mode))
+				printf("%s  ", argv[i]), (*ficount)++, j--;
 			else
-			{
 				fprintf(stderr,
 						"hls: cannot access '%s': No such file or directory\n",
-						argv[i]);
-				(*ret) = 2;
-				(*errors)++;
-				j--;
-			}
+						argv[i]), (*ret) = 2, (*errors)++, j--;
 		}
+		if ((*ficount) > 0)
+			printf("\n");
+		if ((*ficount) > 0 && (*fcount) > 0)
+			printf("\n");
 	}
-	if ((*fcount) == 0 && (*errors) == 0)
+	if ((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0)
 	{
 		free(folders);
 		folders = malloc(sizeof(*folders));
