@@ -15,7 +15,7 @@ char **sort(char **files, int mode)
 
 	if (mode == 2)
 	{
-		reverse(&lfile);		
+		reverse(&lfile);
 		reverse(&lfile);
 	}
 

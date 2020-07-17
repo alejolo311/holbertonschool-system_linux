@@ -32,7 +32,7 @@ typedef struct lfile_s
 } lfile_s;
 
 /* lib */
-char *validate_args(char **argv,char **errors);
+char *validate_args(char **argv, char **errors);
 char **validate_dir(int argc, char **argv,
 					int *ret, int *fcount, int *errors, int *ficount);
 DIR *open_dir(char *folder);

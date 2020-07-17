@@ -3,6 +3,7 @@
  * validate_args - read the argv and select the valid args
  * Description: this function validates the argv and return the valid arguments
  * @argv: double pointer to the arguments passed in the call
+ * @errors: pointer to free in some cases
  * section header: the header of this function is ls.h
  * Return: a string with al the valid args
  */
@@ -11,8 +12,7 @@ char *validate_args(char **argv, char **errors)
 	int i, j;
 	char buff[120] = {'-', '\0'};
 	char *args = NULL;
-	char *valid_args = "1aAlrStR";
-	char str[2];
+	char *valid_args = "1aAlrStR", str[2];
 
 	for (i = 0; argv[i] != NULL; i++)
 	{
@@ -22,11 +22,7 @@ char *validate_args(char **argv, char **errors)
 				if (include(valid_args, argv[i][j]))
 				{
 					if (!include(buff, argv[i][j]))
-					{
-						str[0] = argv[i][j];
-						str[1] = '\0';
-						_strcat(buff, str);
-					}
+						str[0] = argv[i][j], str[1] = '\0', _strcat(buff, str);
 					continue;
 				}
 				else
@@ -37,6 +33,12 @@ char *validate_args(char **argv, char **errors)
 					free(errors);
 					exit(2);
 				}
+		}
+		if (_strstr(argv[i], "---") != NULL)
+		{
+			fprintf(stderr,
+			"hls: unrecognized option '---'\nTry 'hls --help' for more information.\n"), 
+			free(errors), exit(2);
 		}
 	}
 	if (_strlen(buff) != 0)
@@ -64,7 +66,6 @@ char **validate_dir(int argc, char **argv, int *ret,
 	char **folders = NULL;
 	int i = 0, j = 0, dash = 0;
 	struct stat file;
-	(void) errors;
 
 	if (argc != 1)
 	{
@@ -76,12 +77,8 @@ char **validate_dir(int argc, char **argv, int *ret,
 			if (stat(argv[i], &file) == 0 && S_ISDIR(file.st_mode)
 										&& !S_ISREG(file.st_mode))
 				folders[j] = _strdup(argv[i]), (*fcount)++;
-			else if (argv[i][0] == '-' && _strcmp(argv[i], "-") != 0)
-			{
-				j--;
-				if ( _strcmp(argv[i], "--") != 0)
-					dash = 1;
-			}
+			else if (argv[i][0] == '-')
+				j--, _strcmp(argv[i], "--") != 0 ? dash = 1 : 1;
 			else if (stat(argv[i], &file) == 0 && S_ISREG(file.st_mode))
 				printf("%s  ", argv[i]), (*ficount)++, j--;
 			else
@@ -89,15 +86,13 @@ char **validate_dir(int argc, char **argv, int *ret,
 						"hls: cannot access '%s': No such file or directory\n",
 						argv[i]), (*ret) = 2, (*errors)++, j--;
 		}
-		if ((*ficount) > 0)
-			printf("\n");
-		if ((*ficount) > 0 && (*fcount) > 0)
-			printf("\n");
+		(*ficount) > 0 ? printf("\n") : 1;
+		(*ficount) > 0 && (*fcount) > 0 ? printf("\n") : 1;
 	}
-	if (((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0) || dash == 1)
+	if (((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0) ||
+		(dash == 1 && ((*fcount) == 0 && (*errors) == 0 && (*ficount) == 0)))
 	{
-		free(folders);
-		folders = malloc(sizeof(*folders));
+		free(folders), folders = malloc(sizeof(*folders));
 		if (folders == NULL)
 			return (NULL);
 		folders[0] = _strdup("."), (*fcount)++;

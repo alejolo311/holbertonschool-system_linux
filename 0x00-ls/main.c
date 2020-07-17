@@ -47,7 +47,6 @@ int main(int argc, char **argv)
 	else
 		free(errors);
 	free(args);
-
 	if (fcount + ficount > 1)
 		return (0);
 	return (ret);
