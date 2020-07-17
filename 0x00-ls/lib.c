@@ -75,7 +75,7 @@ char **validate_dir(int argc, char **argv, int *ret,
 		if (folders == NULL)
 			return (NULL);
 		for (i = 1, j = 0; argv[i] != NULL; i++, j++)
-		{
+		{	
 			if (lstat(argv[i], &file) == 0 && S_ISDIR(file.st_mode)
 										&& !S_ISREG(file.st_mode))
 				folders[j] = _strdup(argv[i]), (*fcount)++;
@@ -184,10 +184,13 @@ int print_dir(char **files, char *args, char *folder)
 	if (include(args, 'l'))
 		flag_l(files, folder);
 	if ((_strcmp(args, "-") == 0 || include(args, 'A') ||
-		include(args, 'r') || include(args, 'a')) && !include(args, 'l'))
-		without_flags(files, folder, &buffer);
+		include(args, 'r') || (include(args, 'a')) && !include(args, 'l') && !include(args, '1')))
+		{
+			without_flags(files, folder, &buffer);	
+		}
+		
 	if (_strlen(buffer) > 0)
-		printf("%s", buffer);
+		printf("%s", buffer);	
 	if (!include(args, '1') && !include(args, 'l') && _strlen(buffer) > 0)
 		printf("\n");
 
