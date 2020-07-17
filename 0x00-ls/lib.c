@@ -98,6 +98,8 @@ char **validate_dir(int argc, char **argv, int *ret,
 			return (NULL);
 		folders[0] = _strdup("."), (*fcount)++;
 	}
+	 if((*ficount) == 0) 
+	 	free(files);
 	return (folders);
 }
 
