@@ -27,7 +27,11 @@ bool include(char *valid, char arg)
  */
 char *permissions(struct stat file)
 {
-		char *permissions = malloc(sizeof(char) * 11);
+		char *permissions;
+
+		*permissions = malloc(sizeof(char) * 11);
+		if (permissions == NULL)
+			return (NULL);
 		mode_t perm = file.st_mode;
 
 		permissions[0] = ((perm & S_IFMT) == S_IFDIR) ? 'd' : '-';

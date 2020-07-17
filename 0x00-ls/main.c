@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 		files = read_dir(dir, dirs[i], &ret, &*errors);
 		if (files)
 		{
-			if (fcount + ficount > 1)
+			if (fcount + ficount + ecount > 1)
 				printf("%s:\n", dirs[i]);
 			print_dir(files, args, dirs[i]);
 			if (fcount > 1 && i + 1 != fcount)

@@ -52,6 +52,7 @@ char *validate_args(char **argv)
  * @argv: double pointer to the arguments passed in the call
  * @ret: is the value of return in normal cases 0 in error 2
  * @fcount: is the count of folders that ls recieves as an arg
+ * @ficount: is the count of files that ls recieves as an arg
  * @errors: count of errors that occurs
  * section header: the header of this function is ls.h
  * Return: a double pointer that contains all the valid folders
@@ -71,10 +72,10 @@ char **validate_dir(int argc, char **argv, int *ret,
 			return (NULL);
 		for (i = 1, j = 0; argv[i] != NULL; i++, j++)
 		{
-			if (stat(argv[i], &file) == 0 && S_ISDIR(file.st_mode) 
+			if (stat(argv[i], &file) == 0 && S_ISDIR(file.st_mode)
 										&& !S_ISREG(file.st_mode))
 				folders[j] = _strdup(argv[i]), (*fcount)++;
-			else if (argv[i][0] == '-')
+			else if (argv[i][0] == '-' && _strcmp(argv[i], "-") != 0)
 				j--;
 			else if (stat(argv[i], &file) == 0 && S_ISREG(file.st_mode))
 				printf("%s  ", argv[i]), (*ficount)++, j--;
