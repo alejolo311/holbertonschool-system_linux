@@ -119,7 +119,9 @@ void flag_1(char **files, char *folder, char **buffer)
 	{
 		_strcat(*(buffer), files[i]);
 		_strcat(*(buffer), "\n");
+		free(files[i]);
 	}
+	free(files);
 }
 /**
  * without_flags - function to manage the normal print
