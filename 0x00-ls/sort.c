@@ -14,7 +14,11 @@ char **sort(char **files, int mode)
 	lfile = to_list(files);
 
 	if (mode == 2)
+	{
+		reverse(&lfile);		
 		reverse(&lfile);
+	}
+
 
 	files = to_array(&lfile);
 
