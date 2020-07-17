@@ -36,7 +36,7 @@ void flag_l(char **files, char *folder)
 		printf("%ld ", (long) file.st_nlink);
 		printf("%s ", usr->pw_name);
 		printf("%s ", grp->gr_name);
-		printf("%5lld ", (long long) file.st_size);
+		printf("%5ld ", (long) file.st_size);
 		printf("%s ", date);
 		printf("%s\n", files[i]);
 		free(files[i]);

@@ -88,7 +88,7 @@ int get_nodes(char **files, char *folder)
 			exit(EXIT_FAILURE);
 		}
 		if (files[i][0] != '.')
-			nodes += ((long long) file.st_blocks / 2);
+			nodes += ((long) file.st_blocks / 2);
 	}
 	return (nodes);
 }
