@@ -183,8 +183,8 @@ int print_dir(char **files, char *args, char *folder)
 		flag_1(files, folder, &buffer);
 	if (include(args, 'l'))
 		flag_l(files, folder);
-	if ((_strcmp(args, "-") == 0 || include(args, 'A') ||
-		include(args, 'r') || (include(args, 'a')) && !include(args, 'l') && !include(args, '1')))
+	if ((_strcmp(args, "-") == 0 || include(args, 'r')) ||
+		(include(args, 'a') && include(args, 'A') &&!include(args, 'l') && !include(args, '1')))
 		{
 			without_flags(files, folder, &buffer);	
 		}
