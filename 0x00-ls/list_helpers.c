@@ -10,7 +10,7 @@
  */
 lfile_s *add_node(lfile_s **head, char *str)
 {
-    lfile_s *new;
+	lfile_s *new;
 	lfile_s *tmp;
 
 	tmp = *head;
@@ -18,7 +18,7 @@ lfile_s *add_node(lfile_s **head, char *str)
 	if (new == NULL)
 		return (NULL);
 	new->prev = NULL;
-	new->var = strdup(str);
+	new->var = _strdup(str);
 	if (tmp == NULL)
 	{
 		*head = new;
@@ -51,7 +51,7 @@ size_t print_list(lfile_s **head)
 			printf("%s  ", h->var);
 		h = h->next;
 	}
-    printf("\n");
+	printf("\n");
 	return (i);
 }
 /**

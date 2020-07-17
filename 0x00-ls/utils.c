@@ -9,9 +9,9 @@
  */
 bool include(char *valid, char arg)
 {
-	size_t i;
+	int i;
 
-	for (i = 0; i < strlen(valid); i++)
+	for (i = 0; i < _strlen(valid); i++)
 	{
 		if (valid[i] == arg)
 			return (true);
@@ -52,22 +52,15 @@ char *permissions(struct stat file)
  */
 char *get_date(struct stat file)
 {
+	char *date = _strdup(ctime(&file.st_mtime));
+	char buffer[48];
 
-	char *date = strdup(ctime(&file.st_mtime));
-	char *token, *month, *number, *hour;
-	char buffer[24];
 
-	token = strtok(date, " ");
-	token = strtok(NULL, " ");
-	month = strdup(token);
-	token = strtok(NULL, " ");
-	number = strdup(token);
-	token = strtok(NULL, " ");
-	hour = strdup(token);
-	sprintf(buffer, "%s %s %c%c:%c%c", month, number,
-			hour[0], hour[1], hour[3], hour[4]);
-	free(month), free(number), free(hour), free(date);
-	date = strdup(buffer);
+	sprintf(buffer, "%c%c%c %c%c %c%c:%c%c",
+					date[4], date[5], date[6], date[8], date[9],
+					date[11], date[12], date[14], date[15]);
+	free(date);
+	date = _strdup(buffer);
 	return (date);
 }
 /**

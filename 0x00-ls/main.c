@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 	char **dirs = NULL, **errors = NULL, *args = NULL, **files = NULL;
 	int i = 0, ret = 0, fcount = 0, ecount = 0;
 
-	errors = calloc(12, sizeof(*errors));
+	errors = _calloc(12, sizeof(*errors));
 	if (errors == NULL)
 		return (-1);
 

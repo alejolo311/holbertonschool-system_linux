@@ -22,7 +22,7 @@ lfile_s *to_list(char **files)
 
 }
 /**
- * menv - this function convert a list to a doble pointer
+ * to_array - this function convert a list to a doble pointer
  * @head: the head of list
  * Description: this converts list to a doble pointer.
  * section header: the header of this function is ls.h
@@ -36,72 +36,31 @@ char **to_array(lfile_s **head)
 
 	for (i = 0; h; i++)
 		h = h->next;
-	files = calloc(i +1, sizeof(char *));
+	files = _calloc(i + 1, sizeof(char *));
 	h = *head;
 	for (i = 0; h; i++, h = h->next)
-		files[i] = strdup(h->var);
+		files[i] = _strdup(h->var);
 	return (files);
 }
 /**
- * insertion_sort_list - insertion sort algorithm
- * Description: insertion sort algorithm
- * @list: list
- * Return: void
- */
-void nsort(lfile_s **list)
+ * reverse - this function convert a list to a doble pointer
+ * @head: the head of list
+ * Description: this converts list to a doble pointer.
+ * section header: the header of this function is ls.h
+ * Return: the doble pointer.
+ **/
+void reverse(lfile_s **head)
 {
-	lfile_s *aux, *tail, *head, *swap_1, *swap_2, *aux_1, *aux_2;
+	lfile_s *temp = NULL;
+	lfile_s *current = *head;
 
-	if (list == NULL || *list == NULL)
-		return;
-	head = *list;
-	while (head != NULL && head->next != NULL)
-	{	
-		if (head->var[0] > head->next->var[0])
-		{
-
-			swap_1 = head, swap_2 = head->next;
-			aux_1 = swap_1->prev, aux_2 = swap_2->next;
-			if (aux_1 != NULL)
-				aux_1->next = swap_2;
-			else
-				*list = swap_2;
-			aux_2 != NULL ? aux_2->prev = swap_1 : aux_2;
-			swap_2->prev = aux_1, swap_1->next = aux_2;
-			swap_2->next = swap_1, swap_1->prev = swap_2;
-			tail = head, head = head->prev;
-			while (head && head->prev)
-			{ aux = head;
-				if (aux->var[0]  < aux->prev->var[0] )
-				{
-					swap_1 = aux->prev, swap_2 = aux;
-					aux_1 = swap_1->prev, aux_2 = swap_2->next;
-					if (aux_1 != NULL)
-						aux_1->next = swap_2;
-					else
-						*list = swap_2;
-					aux_2 != NULL ? aux_2->prev = swap_1 : aux_2;
-					swap_2->prev = aux_1, swap_1->next = aux_2;
-					swap_2->next = swap_1, swap_1->prev = swap_2;
-				}
-				else
-					break;
-			} head = tail;
-		} else
-			head = head->next;
+	while (current != NULL)
+	{
+		temp = current->prev;
+		current->prev = current->next;
+		current->next = temp;
+		current = current->prev;
 	}
+	if (temp != NULL)
+		*head = temp->prev;
 }
-void reverse(lfile_s **head) 
-{ 
-	lfile_s *temp = NULL;   
-	lfile_s *current = *head; 
-	while (current !=  NULL) 
-	{ 
-	   temp = current->prev; 
-	   current->prev = current->next; 
-	   current->next = temp;               
-	   current = current->prev; 
- 	}       
-	if(temp != NULL) 
-		*head = temp->prev; 
-}   

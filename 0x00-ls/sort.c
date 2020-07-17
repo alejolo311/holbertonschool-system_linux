@@ -8,17 +8,16 @@
  * Return: a string with al the valid args
  */
 char **sort(char **files, int mode)
-{   
-    lfile_s *lfile = NULL;;
-    
-    lfile = to_list(files);
-    nsort(&lfile);
+{
+	lfile_s *lfile = NULL;
 
-    if (mode == 2)
-        reverse(&lfile);
+	lfile = to_list(files);
 
-    files = to_array(&lfile);
-    
-    free_list(&lfile);
-    return files;
-}   
+	if (mode == 2)
+		reverse(&lfile);
+
+	files = to_array(&lfile);
+
+	free_list(&lfile);
+	return (files);
+}

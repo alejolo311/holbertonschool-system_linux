@@ -20,6 +20,7 @@
  * struct lfile_s - singly linked list
  * @str: variable
  * @next: points to the next node
+ * @prev: points to the prev node
  * @var: enviroment variables.
  * Description: singly linked list node to store the env
  */
@@ -72,5 +73,19 @@ int delete_node(lfile_s **head, unsigned int index);
 lfile_s *add_node(lfile_s **head, char *str);
 void free_list(lfile_s **head);
 size_t print_list(lfile_s **head);
+
+
+
+/* memory helpers */
+char *_memset(char *s, char b, unsigned int n);
+void *_calloc(unsigned int nmemb, unsigned int size);
+
+
+/* string helpers */
+
+char *_strcat(char *dest, char *src);
+int _strlen(char *s);
+char *_strdup(char *str);
+int _strcmp(char *s1, char *s2);
 
 #endif /* LS_H */

@@ -25,7 +25,7 @@ char *validate_args(char **argv)
 					{
 						str[0] = argv[i][j];
 						str[1] = '\0';
-						strcat(buff, str);
+						_strcat(buff, str);
 					}
 					continue;
 				}
@@ -38,9 +38,9 @@ char *validate_args(char **argv)
 				}
 		}
 	}
-	if (strlen(buff) != 0)
+	if (_strlen(buff) != 0)
 	{
-		args = strdup(buff);
+		args = _strdup(buff);
 		return (args);
 	}
 	return (NULL);
@@ -71,7 +71,7 @@ char **validate_dir(int argc, char **argv, int *ret, int *fcount, int *errors)
 		for (i = 1, j = 0; argv[i] != NULL; i++, j++)
 		{
 			if (stat(argv[i], &file) == 0 && S_ISDIR(file.st_mode))
-				folders[j] = strdup(argv[i]), (*fcount)++;
+				folders[j] = _strdup(argv[i]), (*fcount)++;
 			else if (argv[i][0] == '-')
 				j--;
 			else
@@ -91,7 +91,7 @@ char **validate_dir(int argc, char **argv, int *ret, int *fcount, int *errors)
 		folders = malloc(sizeof(*folders));
 		if (folders == NULL)
 			return (NULL);
-		folders[0] = strdup("."), (*fcount)++;
+		folders[0] = _strdup("."), (*fcount)++;
 	}
 	return (folders);
 }
@@ -134,16 +134,16 @@ char **read_dir(DIR *dir, char *folder, int *ret, char **errors)
 
 	if (stat(folder, &file) == 0 && file.st_mode & S_IRUSR)
 	{
-		files = calloc(100, sizeof(*files));
+		files = _calloc(100, sizeof(*files));
 		for (i = 0; (read = readdir(dir)) != NULL; i++)
-			files[i] = strdup(read->d_name);
+			files[i] = _strdup(read->d_name);
 	}
 	else
 	{
 		for (i = 0; *(errors + i); i++)
 		{
 		}
-		*(errors + i) = strdup(folder);
+		*(errors + i) = _strdup(folder);
 		*(ret) = 3;
 	}
 	if (files)
@@ -163,7 +163,7 @@ int print_dir(char **files, char *args, char *folder)
 {
 	char *buffer;
 
-	buffer = calloc(8192, sizeof(char));
+	buffer = _calloc(8192, sizeof(char));
 
 	if (include(args, 'r'))
 		files = sort(files, 2);
@@ -175,12 +175,13 @@ int print_dir(char **files, char *args, char *folder)
 		flag_1(files, folder, &buffer);
 	if (include(args, 'l'))
 		flag_l(files, folder);
-	if ((strcmp(args, "-") == 0 || include(args, 'A') || include(args, 'r') || include(args, 'a')) && !include(args, 'l'))
+	if ((_strcmp(args, "-") == 0 || include(args, 'A') ||
+		include(args, 'r') || include(args, 'a')) && !include(args, 'l'))
 		without_flags(files, folder, &buffer);
-	if (strlen(buffer) > 0)
+	if (_strlen(buffer) > 0)
 		printf("%s", buffer);
-	if (!include(args, '1') && !include(args, 'l') && strlen(buffer) > 0)
-		putchar(10);
+	if (!include(args, '1') && !include(args, 'l') && _strlen(buffer) > 0)
+		printf("\n");
 
 	free(buffer);
 	return (0);

@@ -59,12 +59,12 @@ char **flag_a(char **files, char *folder)
 	char **buffer;
 	(void) folder;
 
-	buffer = calloc(48, sizeof(*buffer));
+	buffer = _calloc(48, sizeof(*buffer));
 	for (i = 0, j = 0; files[i] != NULL; i++)
 	{
 		if (files[i][0] != '.')
 		{
-			buffer[j] = strdup(files[i]);
+			buffer[j] = _strdup(files[i]);
 			j++;
 		}
 
@@ -88,12 +88,12 @@ char **flag_A(char **files, char *folder)
 	char **buffer;
 	(void) folder;
 
-	buffer = calloc(48, sizeof(*buffer));
+	buffer = _calloc(48, sizeof(*buffer));
 	for (i = 0, j = 0; files[i] != NULL; i++)
 	{
-		if (strcmp(files[i], ".") != 0 && strcmp(files[i], "..") != 0)
+		if (_strcmp(files[i], ".") != 0 && _strcmp(files[i], "..") != 0)
 		{
-			buffer[j] = strdup(files[i]);
+			buffer[j] = _strdup(files[i]);
 			j++;
 		}
 	free(files[i]);
@@ -117,8 +117,8 @@ void flag_1(char **files, char *folder, char **buffer)
 
 	for (i = 0; files[i] != NULL; i++)
 	{
-		strcat(*(buffer), files[i]);
-		strcat(*(buffer), "\n");
+		_strcat(*(buffer), files[i]);
+		_strcat(*(buffer), "\n");
 	}
 }
 /**
@@ -136,8 +136,8 @@ void without_flags(char **files, char *folder, char **buffer)
 	(void) folder;
 	for (i = 0; files[i] != NULL; i++)
 	{
-		strcat(*(buffer), files[i]);
-		strcat(*(buffer), "  ");
+		_strcat(*(buffer), files[i]);
+		_strcat(*(buffer), "  ");
 		free(files[i]);
 	}
 	free(files);
