@@ -4,6 +4,7 @@
  * a blank line
  * @head: the head of list
  * @str: the string to put in the new node
+ * @file: info
  * Description: add a new node to a list
  * section header: the header of this function is hsh.h
  * Return: the head of the list.
@@ -11,25 +12,28 @@
 lfile_s *add_node(lfile_s **head, char *str, struct stat file)
 {
 	lfile_s *new;
-	lfile_s *tmp;
+	lfile_s *actual;
 
-	tmp = *head;
+	actual = *head;
 	new = malloc(sizeof(lfile_s));
 	if (new == NULL)
 		return (NULL);
-	new->prev = NULL;
+	new->next = NULL;
 	new->var = _strdup(str);
 	new->time = parse_date(file);
 	new->size = (long) file.st_size;
-	if (tmp == NULL)
+	if (actual == NULL)
 	{
+		new->prev = NULL;
 		*head = new;
-		new->next = NULL;
 		return (new);
 	}
-	new->next = tmp;
-	tmp->prev = new;
-	*head = new;
+	while (actual->next)
+	{
+		actual = actual->next;
+	}
+	actual->next = new;
+	new->prev = actual;
 	return (new);
 }
 /**
@@ -50,7 +54,7 @@ size_t print_list(lfile_s **head)
 		if (h->var == NULL)
 			printf("[0] (nil)\n");
 		else
-			printf("file -> {%s} size -> {%li}\n", h->var, h->size);
+			printf("file -> {%s} size -> {%li} -> {%lu}\n", h->var, h->size, h->time);
 		h = h->next;
 	}
 	printf("\n");

@@ -4,6 +4,7 @@
  * Description: this function sort files
  * @files: double pointer to the arguments passed in the call
  * @mode: in which way is the info sorted
+ * @folder: in which way is the info sorted
  * section header: the header of this function is ls.h
  * Return: a string with al the valid args
  */
@@ -16,10 +17,11 @@ char **sort(char **files, int mode, char *folder)
 	if (mode == 2)
 	{
 		reverse(&lfile);
-		reverse(&lfile);
 	}
 	if (mode == 3)
 	{
+		by_time(&lfile);
+		reverse(&lfile);
 	}
 	if (mode == 4)
 	{
@@ -54,7 +56,7 @@ void reverse(lfile_s **head)
 		*head = temp->prev;
 }
 /**
- * insertion_sort_list - insertion sort algorithm
+ * by_size - insertion sort algorithm
  * Description: insertion sort algorithm
  * @list: list
  * Return: void
@@ -83,6 +85,54 @@ void by_size(lfile_s **list)
 			while (head && head->prev)
 			{ aux = head;
 				if (aux->size < aux->prev->size)
+				{
+					swap_1 = aux->prev, swap_2 = aux;
+					aux_1 = swap_1->prev, aux_2 = swap_2->next;
+					if (aux_1 != NULL)
+						aux_1->next = swap_2;
+					else
+						*list = swap_2;
+					aux_2 != NULL ? aux_2->prev = swap_1 : aux_2;
+					swap_2->prev = aux_1, swap_1->next = aux_2;
+					swap_2->next = swap_1, swap_1->prev = swap_2;
+				}
+				else
+					break;
+			} head = tail;
+		} else
+			head = head->next;
+	}
+}
+/**
+ * by_time - insertion sort algorithm
+ * Description: insertion sort algorithm
+ * @list: list
+ * Return: void
+ */
+void by_time(lfile_s **list)
+{
+	lfile_s *aux, *tail, *head, *swap_1, *swap_2, *aux_1, *aux_2;
+
+	if (list == NULL || *list == NULL)
+		return;
+	head = *list;
+	while (head != NULL && head->next != NULL)
+	{
+		if (head->time > head->next->time)
+		{
+			swap_1 = head, swap_2 = head->next;
+			aux_1 = swap_1->prev, aux_2 = swap_2->next;
+			if (aux_1 != NULL)
+				aux_1->next = swap_2;
+			else
+				*list = swap_2;
+			aux_2 != NULL ? aux_2->prev = swap_1 : aux_2;
+			swap_2->prev = aux_1, swap_1->next = aux_2;
+			swap_2->next = swap_1, swap_1->prev = swap_2;
+			tail = head, head = head->prev;
+			while (head && head->prev)
+			{ aux = head;
+				if (aux->time < aux->prev->time)
 				{
 					swap_1 = aux->prev, swap_2 = aux;
 					aux_1 = swap_1->prev, aux_2 = swap_2->next;

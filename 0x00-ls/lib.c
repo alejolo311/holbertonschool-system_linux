@@ -75,14 +75,14 @@ char **validate_dir(int argc, char **argv, int *ret,
 		if (folders == NULL)
 			return (NULL);
 		for (i = 1, j = 0; argv[i] != NULL; i++, j++)
-		{	
+		{
 			if (lstat(argv[i], &file) == 0 && S_ISDIR(file.st_mode)
 										&& !S_ISREG(file.st_mode))
 				folders[j] = _strdup(argv[i]), (*fcount)++;
 			else if (argv[i][0] == '-')
 				j--, _strcmp(argv[i], "--") != 0 ? dash = 1 : 1;
 			else if (lstat(argv[i], &file) == 0 && S_ISREG(file.st_mode))
-				files[k] = strdup(argv[i]), (*ficount)++, j--, k++;
+				files[k] = _strdup(argv[i]), (*ficount)++, j--, k++;
 			else
 				fprintf(stderr,
 						"hls: cannot access %s: No such file or directory\n",
@@ -170,12 +170,13 @@ char **read_dir(DIR *dir, char *folder, int *ret, char **errors)
 int print_dir(char **files, char *args, char *folder)
 {
 	char *buffer;
+	char sort_mode;
 
 	buffer = _calloc(8192, sizeof(char));
-
-	if (include(args, 't'))
+	sort_mode = select_sort(args);
+	if (sort_mode == 't')
 		files = sort(files, 3, folder);
-	if (include(args, 'S'))
+	if (sort_mode == 'S')
 		files = sort(files, 4, folder);
 	if (include(args, 'r'))
 		files = sort(files, 2, folder);
@@ -189,23 +190,19 @@ int print_dir(char **files, char *args, char *folder)
 		flag_l(files, folder);
 	if (_strcmp(args, "-") == 0)
 		without_flags(files, folder, &buffer);
-	else if (include(args, 'a') || include(args, 'A') || include(args, 'r') || include(args, 'S'))
+	else if (include(args, 'a') || include(args, 'A')
+			|| include(args, 'r') || include(args, 'S'))
 	{
 		if (include(args, 'l') || include(args, '1'))
 			;
-		else 
-		{
-			without_flags(files, folder, &buffer);	
-		}
+		else
+			without_flags(files, folder, &buffer);
 
 	}
-
-		
 	if (_strlen(buffer) > 0)
-		printf("%s", buffer);	
+		printf("%s", buffer);
 	if (!include(args, '1') && !include(args, 'l') && _strlen(buffer) > 0)
 		printf("\n");
-
 	free(buffer);
 	return (0);
 }

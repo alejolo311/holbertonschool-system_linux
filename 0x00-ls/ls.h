@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdbool.h>
@@ -19,6 +18,8 @@
 /**
  * struct lfile_s - singly linked list
  * @str: variable
+ * @size: variable
+ * @time: variable
  * @next: points to the next node
  * @prev: points to the prev node
  * @var: enviroment variables.
@@ -69,7 +70,10 @@ char **sort(char **files, int mode, char *folder);
 lfile_s *to_list(char **files, char *folder);
 char **to_array(lfile_s **head);
 void by_size(lfile_s **list);
+void by_time(lfile_s **list);
 void reverse(lfile_s **list);
+int _index(char *valid, char arg);
+char select_sort(char *args);
 
 /* list helpers */
 
@@ -92,5 +96,6 @@ int _strlen(char *s);
 char *_strdup(char *str);
 int _strcmp(char *s1, char *s2);
 char *_strstr(char *haystack, char *needle);
+unsigned long int _atoi(char *s);
 
 #endif /* LS_H */
