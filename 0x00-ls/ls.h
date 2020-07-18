@@ -27,6 +27,8 @@
 typedef struct lfile_s
 {
 	char *var;
+	long int size;
+	unsigned long int time;
 	struct lfile_s *prev;
 	struct lfile_s *next;
 } lfile_s;
@@ -43,6 +45,7 @@ int print_dir(char **files, char *args, char *folder);
 bool include(char *valid, char arg);
 char *permissions(struct stat file);
 char *get_date(struct stat file);
+long int parse_date(struct stat file);
 int get_nodes(char **files, char *folder);
 
 
@@ -58,20 +61,20 @@ void without_flags(char **files, char *folder, char **buffer);
 
 /* sorting */
 
-char **sort(char **files, int mode);
+char **sort(char **files, int mode, char *folder);
 
 
 
 /* sorting helpers */
-lfile_s *to_list(char **files);
+lfile_s *to_list(char **files, char *folder);
 char **to_array(lfile_s **head);
-void nsort(lfile_s **list);
+void by_size(lfile_s **list);
 void reverse(lfile_s **list);
 
 /* list helpers */
 
 int delete_node(lfile_s **head, unsigned int index);
-lfile_s *add_node(lfile_s **head, char *str);
+lfile_s *add_node(lfile_s **head, char *str, struct stat file);
 void free_list(lfile_s **head);
 size_t print_list(lfile_s **head);
 

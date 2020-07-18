@@ -155,7 +155,7 @@ char **read_dir(DIR *dir, char *folder, int *ret, char **errors)
 		*(ret) = 3;
 	}
 	if (files)
-		files = sort(files, 1);
+		files = sort(files, 1, folder);
 	return (files);
 }
 /**
@@ -173,8 +173,12 @@ int print_dir(char **files, char *args, char *folder)
 
 	buffer = _calloc(8192, sizeof(char));
 
+	if (include(args, 't'))
+		files = sort(files, 3, folder);
+	if (include(args, 'S'))
+		files = sort(files, 4, folder);
 	if (include(args, 'r'))
-		files = sort(files, 2);
+		files = sort(files, 2, folder);
 	if (!include(args, 'a') && !include(args, 'A'))
 		files = flag_a(files, folder);
 	if (include(args, 'A') && !include(args, 'a'))
@@ -185,7 +189,7 @@ int print_dir(char **files, char *args, char *folder)
 		flag_l(files, folder);
 	if (_strcmp(args, "-") == 0)
 		without_flags(files, folder, &buffer);
-	else if (include(args, 'a') || include(args, 'A') || include(args, 'r'))
+	else if (include(args, 'a') || include(args, 'A') || include(args, 'r') || include(args, 'S'))
 	{
 		if (include(args, 'l') || include(args, '1'))
 			;

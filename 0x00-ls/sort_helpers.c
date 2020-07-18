@@ -6,15 +6,23 @@
  * section header: the header of this function is ls.h
  * Return: return the list.
  **/
-lfile_s *to_list(char **files)
+lfile_s *to_list(char **files, char *folder)
 {
 	int i;
 	lfile_s *lfile;
+	struct stat file;
+	char buffer[48];
 
 	lfile = NULL;
 	for (i = 0; files[i] != NULL; i++)
 	{
-		add_node(&lfile, files[i]);
+		sprintf(buffer, "%s/%s", folder, files[i]);
+		if (lstat(buffer, &file) == -1)
+		{
+			perror("lstat");
+			exit(EXIT_FAILURE);
+		}
+		add_node(&lfile, files[i], file);
 		free(files[i]);
 	}
 	free(files);
@@ -41,26 +49,4 @@ char **to_array(lfile_s **head)
 	for (i = 0; h; i++, h = h->next)
 		files[i] = _strdup(h->var);
 	return (files);
-}
-/**
- * reverse - this function convert a list to a doble pointer
- * @head: the head of list
- * Description: this converts list to a doble pointer.
- * section header: the header of this function is ls.h
- * Return: the doble pointer.
- **/
-void reverse(lfile_s **head)
-{
-	lfile_s *temp = NULL;
-	lfile_s *current = *head;
-
-	while (current != NULL)
-	{
-		temp = current->prev;
-		current->prev = current->next;
-		current->next = temp;
-		current = current->prev;
-	}
-	if (temp != NULL)
-		*head = temp->prev;
 }

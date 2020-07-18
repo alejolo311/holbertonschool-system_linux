@@ -8,7 +8,7 @@
  * section header: the header of this function is hsh.h
  * Return: the head of the list.
  */
-lfile_s *add_node(lfile_s **head, char *str)
+lfile_s *add_node(lfile_s **head, char *str, struct stat file)
 {
 	lfile_s *new;
 	lfile_s *tmp;
@@ -19,6 +19,8 @@ lfile_s *add_node(lfile_s **head, char *str)
 		return (NULL);
 	new->prev = NULL;
 	new->var = _strdup(str);
+	new->time = parse_date(file);
+	new->size = (long) file.st_size;
 	if (tmp == NULL)
 	{
 		*head = new;
@@ -48,7 +50,7 @@ size_t print_list(lfile_s **head)
 		if (h->var == NULL)
 			printf("[0] (nil)\n");
 		else
-			printf("%s  ", h->var);
+			printf("file -> {%s} size -> {%li}\n", h->var, h->size);
 		h = h->next;
 	}
 	printf("\n");
