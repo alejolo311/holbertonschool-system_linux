@@ -80,7 +80,7 @@ long int parse_date(struct stat file)
 	char buffer[48], m[4];
 	char Epoch[5];
 	char month[3];
-	char *ptr;
+	//char *ptr;
 
 
 	Epoch[0] = date[20], Epoch[1] = date[21], 
