@@ -104,7 +104,7 @@ long int parse_date(struct stat file)
 	date[11], date[12], date[14], date[15]);
 
 	free(date);
-	return (strtoul(buffer, &ptr, 10));
+	return (12);
 }
 /**
  * get_nodes - get the alloc blocks
