@@ -4,10 +4,11 @@
  * Description: print in long format
  * @files: the files that the folder contains
  * @folder: the folder that is print
+ * @vuffer: buffer
  * section header: the header of this function is ls.h
  * Return: void
  */
-void flag_l(char **files, char *folder)
+void flag_l(char **files, char *folder, char **vuffer)
 {
 	struct stat file;
 	int i;
@@ -15,6 +16,7 @@ void flag_l(char **files, char *folder)
 	struct passwd *usr;
 	struct group *grp;
 	char *perm, *date;
+	char buff[512];
 
 	for (i = 0; files[i] != NULL; i++)
 	{
@@ -29,16 +31,19 @@ void flag_l(char **files, char *folder)
 		grp = getgrgid(file.st_gid);
 		perm = permissions(file);
 		date = get_date(file);
-		printf("%s ", perm);
-		printf("%ld ", (long) file.st_nlink);
-		printf("%s ", usr->pw_name != NULL ? usr->pw_name : "");
-		printf("%s ", grp->gr_name != NULL ? grp->gr_name : "");
-		printf("%ld ", (long) file.st_size);
-		printf("%s ", date);
-		printf("%s\n", files[i]);
+		sprintf(buff, "%s %ld %s %s %ld %s %s\n",
+		perm,
+		(long) file.st_nlink,
+		usr->pw_name != NULL ? usr->pw_name : "",
+		grp->gr_name != NULL ? grp->gr_name : "",
+		(long) file.st_size,
+		date,
+		files[i]
+		);
 		free(files[i]);
 		free(perm);
 		free(date);
+		_strcat(*(vuffer), buff);
 	}
 	free(files);
 }

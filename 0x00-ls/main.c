@@ -17,9 +17,11 @@ int main(int argc, char **argv)
 	errors = _calloc(12, sizeof(*errors));
 	if (errors == NULL)
 		return (-1);
-
 	args = validate_args(argv, errors);
-	dirs = validate_dir(argc, argv, &ret, &fcount, &ecount, &ficount, args);
+	if (include(args, 'R'))
+		dirs = juggernaut(argc, argv, &ret, &fcount, &ecount, &ficount, args);
+	else
+		dirs = validate_dir(argc, argv, &ret, &fcount, &ecount, &ficount, args);
 	for (i = 0; i < fcount; i++)
 	{
 		dir = open_dir(dirs[i]);
