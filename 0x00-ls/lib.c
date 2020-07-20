@@ -191,7 +191,7 @@ int print_dir(char **files, char *args, char *folder)
 	if (_strcmp(args, "-") == 0)
 		without_flags(files, folder, &buffer);
 	else if (include(args, 'a') || include(args, 'A')
-			|| include(args, 'r') || include(args, 'S'))
+			|| include(args, 'r') || include(args, 'S') || include(args, 't'))
 	{
 		if (include(args, 'l') || include(args, '1'))
 			;
