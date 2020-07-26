@@ -16,7 +16,7 @@ void race_state(int *id, size_t size)
 
 	if (size == 0)
 	{
-		while (head == NULL)
+		while (head != NULL)
 		{
 			_car = head;
 			head = head->next;
