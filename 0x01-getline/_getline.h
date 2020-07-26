@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
+#define READ_SIZE 1024
 
 /**
  * struct fd - holds an open file descriptor buffer

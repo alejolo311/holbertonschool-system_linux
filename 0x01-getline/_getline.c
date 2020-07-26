@@ -65,7 +65,7 @@ char *get_line(vuffer *head, const int fd)
  */
 char *read_line(vuffer *buffer)
 {
-	char vuf[1024 + 1], *ptr, *line, *actual;
+	char vuf[READ_SIZE + 1], *ptr, *line, *actual;
 	ssize_t _read = 0, size;
 
 	size = buffer->len - buffer->i, actual = buffer->vuf + buffer->i;
@@ -74,7 +74,7 @@ char *read_line(vuffer *buffer)
 	{
 		while (1)
 		{
-			_read = read(buffer->fd, vuf, 1024);
+			_read = read(buffer->fd, vuf, READ_SIZE);
 			if (_read < 0 || (_read == 0 && !buffer->len))
 			{
 				buffer->vuf ? free(buffer->vuf), buffer->vuf = NULL : NULL;
