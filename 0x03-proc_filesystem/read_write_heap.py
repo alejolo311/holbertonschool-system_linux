@@ -4,17 +4,17 @@ Hack VM
 """
 import sys
 
+
 def main():
-    """Replace a word "A" to "B" allocate in the heap memory"""
+    """replace words"""
     if len(sys.argv) != 4:
-        print("Usage: read_write_heap.py pid search_string Rstringtring")
+        print("Usage:read_write_heap.py pid search_string replace_string")
         exit(1)
     pid = sys.argv[1]
     sSearch = sys.argv[2]
     Rstring = sys.argv[3]
 
     if len(Rstring) > len(sSearch):
-        print("Length string of the replace can not be greater than search")
         exit(1)
 
     try:
@@ -53,14 +53,13 @@ def main():
     mem_file.close()
 
     if index_sSearch == -1:
-        print("\"{}\" no found in heap memory".format(sSearch))
         exit(1)
 
     if not heap_found:
-        print("No heap memory use in {} process".format(pid))
         exit(1)
 
     print("replacting string in mem: /proc/{}/mem".format(pid))
+
 
 if __name__ == "__main__":
     main()
