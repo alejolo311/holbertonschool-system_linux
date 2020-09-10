@@ -11,7 +11,7 @@
  */
 int main(int argc, char **argv, char **env)
 {
-	char *args[] = {"/usr/bin/readelf", "-W", "-h", "", NULL};
+	char *args[] = {"/usr/bin/readelf", "-W", "-S", "", NULL};
 
 	(void)argc;
 	args[3] = argv[1];
