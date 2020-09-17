@@ -1,5 +1,6 @@
 BITS 64
 	global asm_strcmp
+
 	section .text
 
 asm_strcmp:
@@ -31,7 +32,6 @@ equal:
 	mov eax, 0h	
 
 end:
-
 	pop rdx	
 	mov rsp, rbp
 	pop rbp
