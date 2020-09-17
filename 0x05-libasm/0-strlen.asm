@@ -1,4 +1,4 @@
-  BITS 64
+BITS 64
 	global asm_strlen
 
 	section .text
