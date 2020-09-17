@@ -16,7 +16,6 @@ body:
 check:
 	cmp byte [rdi], 0
 	jne body
-
 	mov rsp, rbp
 	pop rbp
 	ret
