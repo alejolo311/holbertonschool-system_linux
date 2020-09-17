@@ -16,23 +16,23 @@ strcmp_loop:
 	jg greater
 	cmp dl,	0h
 	je equal
-	inc rdi	
-	inc rsi		
+	inc rdi
+	inc rsi
 	jmp strcmp_loop
 
 less:
 	mov eax, -1h
-	jmp end	
+	jmp end
 
 greater:
 	mov eax, 1h
 	jmp end
 
 equal:
-	mov eax, 0h	
+	mov eax, 0h
 
 end:
-	pop rdx	
+	pop rdx
 	mov rsp, rbp
 	pop rbp
 	ret
