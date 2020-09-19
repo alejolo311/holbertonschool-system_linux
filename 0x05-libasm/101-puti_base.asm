@@ -14,20 +14,22 @@ asm_puti_base:
  	push r13
 	push r14
 	push r15
-    xor r14, r14
+	xor rax, rax
+	xor r14, r14
 	xor r15, r15
 	movsx r15, edi
-	xor rax, rax
 	cmp r15, 0
 	jge negative
 	imul r15, -1
-    mov rdi, 45
 	mov r13, 1
-    push rsi
+	mov rdi, 45
+	push rsi
 	push rbx
 	call asm_putc
-    pop rbx
+	pop rbx
 	pop rsi
+
+
 negative:
 	mov rdi, rsi
 	call asm_strlen
@@ -40,8 +42,8 @@ negative:
 	jz done_un
 	xor rax, rax
 	mov al, BYTE [rsi]
-    dec r15
 	push rax
+	dec r15
 	jmp un
 	done_un:
 	xor rax, rax
@@ -54,10 +56,10 @@ cero:
 	mov r13, 1
 while:
 	test rbx, rbx
-	jz while_base
+	jz while_nba
 	xor rdx, rdx
 	test r15, r15
-	jz done_while
+	jz done
 	mov rax, r15
 	div rbx
 	mov r15, rax
@@ -66,12 +68,12 @@ while:
 	push rax
 	inc r14
 	jmp while
-done_while:
-	jmp done_while
-while_base:
+done:
+	jmp while_b
+while_nba:
 	xor rdx, rdx
 	test r15, r15
-	jz done_while_base
+	jz while_nb
 	mov rax, r15
 	mov rbx, 10
 	div rbx
@@ -81,27 +83,29 @@ while_base:
 	add rax, 48
 	push rax
 	inc r14
-	jmp while_base
-done_while:
+	jmp while_nba
+while_nb:
+
+while_b:
 	mov r15, r14
 print:
 	test r15, r15
-	jz done_print
+	jz done_loop
 	pop rdi
 	after_pop:
 	call asm_putc
 	dec r15
 	jmp print
-done_print:
+done_loop:
 	cmp r13, 1
 	jne end
 	inc r14
 end:
 	mov rax, r14
-	pop r12
-	pop r13
-	pop r14
 	pop r15
+	pop r14
+	pop r13
+	pop r12
 	mov rsp, rbp
 	pop rbp
 	ret
