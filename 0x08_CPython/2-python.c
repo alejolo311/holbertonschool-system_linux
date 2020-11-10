@@ -6,6 +6,7 @@
 #include <bytesobject.h>
 #include <floatobject.h>
 #include <string.h>
+
 /**
  * print_python_bytes - print python things
  * @p: pointer to PyObject p
@@ -53,9 +54,9 @@ void print_python_list(PyObject *p)
 	printf("[*] Size of the Python List = %ld\n[*] Allocated = %li\n", size, a);
 	for (i = 0; i < size; i++)
 	{
-		t = Py_TYPE(PyList_GetItem(p, i))->tp_name;
+		t = (list->ob_item[i])->ob_type->tp_name;
 		printf("Element %li: %s\n", i, t);
-		if (PyBytes_Check(t))
-			print_python_bytes(t);
+		if (!strcmp(t, "bytes"))
+			print_python_bytes(list->ob_item[i]);
 	}
 }
