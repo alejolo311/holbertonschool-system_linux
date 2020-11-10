@@ -41,7 +41,7 @@ void print_python_float(PyObject *p)
 
 	setbuf(stdout, NULL);
 	printf("[.] float object info\n");
-	if (PyFloat_Check(p) == 0)
+	if (PyFloat_Check(p) == 0 || p == NULL)
 	{
 		printf("  [ERROR] Invalid Float Object\n");
 		return;
@@ -77,7 +77,7 @@ void print_python_list(PyObject *p)
 		printf("Element %li: %s\n", i, t);
 		if (!strcmp(t, "bytes"))
 			print_python_bytes(list->ob_item[i]);
-		if(!strcmp(t, "float")) 
+		else if (!strcmp(t, "float")) 
 			print_python_float(list->ob_item[i]);
 	}
 }
