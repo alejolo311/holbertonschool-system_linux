@@ -11,7 +11,7 @@ void print_python_int(PyObject *p)
 	digit *number;
 
 
-	if (PyLong_Check(p) == 0|| p == NULL)
+	if (PyLong_Check(p) == 0 || p == NULL)
 	{
 		printf("Invalid Int Object\n");
 		return;
@@ -21,7 +21,7 @@ void print_python_int(PyObject *p)
 	size = ((PyVarObject *)(p))->ob_size, _abs = abs(size);
 
 
-	if ( _abs > 3 || (_abs == 3 && number[2] > 15))
+	if (_abs > 3 || (_abs == 3 && number[2] > 15))
 	{
 		printf("C unsigned long int overflow\n");
 		return;

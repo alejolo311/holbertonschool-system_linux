@@ -9,7 +9,7 @@
  */
 void print_python_string(PyObject *p)
 {
-	
+
 	wchar_t *val;
 	char *data;
 	Py_ssize_t len;
