@@ -28,13 +28,10 @@ void print_python_bytes(PyObject *p)
 	printf("  first %ld bytes: ", b);
 	for (i = 0; i < b - 1; i++)
 	{
-		if (i == 0)
-			printf("%.2x", (unsigned char)str[i]);
-		else
-			printf(" %.2x", (unsigned char)str[i]);
+		printf("%02hhx ", str[i]);
 	}
-	printf("\n");
-	fflush(stdout);
+
+	printf("%02hhx\n", str[i]);
 }
 /**
  * print_python_float - print python things
@@ -54,7 +51,7 @@ void print_python_float(PyObject *p)
 	}
 	f = (((PyFloatObject *)(p))->ob_fval);
 	str = PyOS_double_to_string(f, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
-	printf("  value: %s\n", str);
+	printf("  value: %s\n", s);
 	fflush(stdout);
 }
 
