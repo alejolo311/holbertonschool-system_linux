@@ -47,8 +47,13 @@ void print_python_float(PyObject *p)
 		return;
 	}
 	f = (((PyFloatObject *)(p))->ob_fval);
-	str = PyOS_double_to_string(f, 'g', 16, Py_DTSF_ADD_DOT_0, NULL);
-	printf("  value: %s\n", str);
+	str = PyOS_double_to_string(f, 'g', 16, 0, NULL);
+	if (strchr(str, '.'))
+		printf("  value: %s\n", str);
+	else
+		printf("  value: %s.0\n", str);
+	
+	
 }
 /**
  * print_python_list - print python things
