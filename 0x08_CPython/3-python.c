@@ -46,8 +46,8 @@ void print_python_float(PyObject *p)
 		printf("  [ERROR] Invalid Float Object\n");
 		return;
 	}
-	f = ((PyFloatObject *)(p))->ob_fval;
-	str = PyOS_double_to_string(f, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+	f = (((PyFloatObject *)(p))->ob_fval);
+	str = PyOS_double_to_string(f, 'g', 16, Py_DTSF_ADD_DOT_0, NULL);
 	printf("  value: %s\n", str);
 }
 /**
