@@ -12,10 +12,9 @@
  */
 int main(int argc, char **argv, char **env)
 {
+	char *comm[] = {"./hnm", "-p", "", NULL};
 
 	(void)argc;
-
-	char *comm[] = {"./hnm", "-p", "", NULL};
 
 	comm[2] = argv[1];
 	if (execve("/usr/bin/nm", comm, env) == -1)
