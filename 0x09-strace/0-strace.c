@@ -21,7 +21,7 @@ int main(int argc, char **argv, char **env)
 			trace(argv + 1, env);
 		} else if (pid > 0)
 		{
-			tracer(pid);
+			tracer(pid, 1);
 		} else
 		{
 			perror("fork failed");

@@ -20,6 +20,6 @@
 
 void trace(char **argv, char **env);
 int _syscallWait(pid_t child_pid);
-void tracer(pid_t child_pid);
+void tracer(pid_t pid, int method);
 
 #endif /* strace */
