@@ -19,7 +19,7 @@ void trace(char **argv, char **env)
  * tracer -  run tracer
  * @pid: to trace
  */
-void tracer(pid_t pid)
+void tracer(pid_t pid, int method)
 {
 	struct user_regs_struct registers;
 	int status;
@@ -31,8 +31,12 @@ void tracer(pid_t pid)
 		if (_syscallWait(pid) != 0)
 			break;
 		ptrace(PTRACE_GETREGS, pid, 0, &registers);
-		printf("%ld\n", (size_t) registers.orig_rax);
+        if (method == 1)
+		    printf("%ld", (size_t) registers.orig_rax);
+        if (method == 2)
+		    printf("%s", syscalls_64_g[(size_t) registers.orig_rax].name);
 		fflush(stdout);
+        printf("\n");
 		if (_syscallWait(pid) != 0)
 			break;
 	}
