@@ -32,11 +32,14 @@ void tracer(pid_t pid, int method)
 			break;
 		ptrace(PTRACE_GETREGS, pid, 0, &registers);
         if (method == 1)
-		    printf("%ld", (size_t) registers.orig_rax);
+		    printf("%ld\n", (size_t) registers.orig_rax);
         if (method == 2)
+        {
 		    printf("%s", syscalls_64_g[(size_t) registers.orig_rax].name);
+            printf("\n");
+        }
 		fflush(stdout);
-        printf("\n");
+
 		if (_syscallWait(pid) != 0)
 			break;
 	}
