@@ -34,12 +34,9 @@ void tracer(pid_t pid, int method)
         if (method == 1)
 		    printf("%ld\n", (size_t) registers.orig_rax);
         if (method == 2)
-        {
 		    printf("%s", syscalls_64_g[(size_t) registers.orig_rax].name);
-            printf("\n");
-        }
 		fflush(stdout);
-
+        method == 2 ? printf("\n") : 0;
 		if (_syscallWait(pid) != 0)
 			break;
 	}
